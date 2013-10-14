@@ -72,6 +72,16 @@
     [self setNeedsLayout];
 }
 
+- (void)addTag:(NSString *)tagText
+{
+    if(textArray)
+        textArray = [textArray arrayByAddingObject:tagText];
+    else
+        textArray = @[tagText];
+    
+    [self setNeedsLayout];
+}
+
 - (void)setTagBackgroundColor:(UIColor *)color
 {
     lblBackgroundColor = color;

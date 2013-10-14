@@ -51,7 +51,10 @@ typedef enum {
 
 - (void)setTagBackgroundColor:(UIColor *)color;
 - (void)setTagHighlightColor:(UIColor *)color;
+
 - (void)setTags:(NSArray *)array;
+- (void)addTag:(NSString *)tagText;
+
 - (void)display;
 - (CGSize)fittedSize;
 
