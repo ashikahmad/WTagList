@@ -22,8 +22,10 @@ typedef enum {
 
 @protocol DWTagListDelegate <NSObject>
 
-@required
+@optional
+- (void)tagListPreparedAllTags:(DWTagList *) list;
 
+@required
 - (void)tagList:(DWTagList *) list selectedTag:(DWTagView *)tagView;
 
 @end
@@ -71,8 +73,15 @@ typedef enum {
 // find
 -(DWTagView *) tagWithText:(NSString *) tagText;
 
-// remove
+/**
+ removes tags with same test as tagText.
+ @warning all tags matching will be removed (same will happen in removeTag: also)
+ */
 - (void)removeTagWithText:(NSString *) tagText;
+/**
+ @warning all tags with same text will be removed as they are identified by text.
+ @see removeTagWithText:
+ */
 - (void)removeTag:(DWTagView *) tag;
 
 - (void)display;

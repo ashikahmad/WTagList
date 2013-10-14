@@ -190,6 +190,7 @@
 
 - (void)display
 {
+    BOOL firstSetUp = (self.subviews.count==0 && self.textArray.count>1);
     self.maxTagWidth = MAXFLOAT;
     if (self.layoutType != DWTagLayoutHorizontal) {
         self.maxTagWidth = self.frame.size.width - self.labelMargin;
@@ -199,10 +200,7 @@
     for (UIView *subview in [self subviews]) {
         if ([subview isKindOfClass:[DWTagView class]]) {
             DWTagView *tagView = (DWTagView*)subview;
-//            for (UIGestureRecognizer *gesture in [subview gestureRecognizers]) {
-//                [subview removeGestureRecognizer:gesture];
-//            }
-//            
+
             [tagView.button removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
             
             [tagViews addObject:subview];
@@ -215,16 +213,18 @@
     BOOL lineStart = YES;
     
     for (NSString *text in textArray) {
-        DWTagView *tagView;
+        DWTagView *tagView = nil;
         if (tagViews.count > 0) {
-            tagView = [tagViews lastObject];
-            [tagViews removeLastObject];
+            NSArray *arr = [tagViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"text=%@", text]];
+            if(arr && arr.count)
+                tagView = arr[0];
+            [tagViews removeObject:tagView];
         }
-        else {
+        if(!tagView) {
             tagView = [[DWTagView alloc] initForList:self];
+            tagView.text = text;
         }
         
-        tagView.text = text;
         if (self.layoutType == DWTagLayoutVertical
             ||
             (self.layoutType == DWTagLayoutFlow
@@ -266,6 +266,12 @@
     if (self.automaticResize) {
         [self sizeToFit];
     }
+    
+    if (firstSetUp
+        &&self.tagDelegate
+        && [self.tagDelegate respondsToSelector:@selector(tagListPreparedAllTags:)]) {
+        [self.tagDelegate tagListPreparedAllTags:self];
+    }
 }
 
 -(void)sizeToFit {
@@ -284,8 +290,7 @@
     UIButton *button = (UIButton*)sender;
     if(button
        && [button.superview isKindOfClass:[DWTagView class]]
-       && self.tagDelegate
-       && [self.tagDelegate respondsToSelector:@selector(tagList:selectedTag:)])
+       && self.tagDelegate)
         [self.tagDelegate tagList:self selectedTag:(DWTagView *)button.superview];
 }
 

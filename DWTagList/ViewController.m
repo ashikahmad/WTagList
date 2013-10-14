@@ -25,19 +25,6 @@
     [self removeKeyboard:nil];
 }
 
--(void)tagList:(DWTagList *)list selectedTag:(DWTagView *)tagView {
-    if (list == self.xibList) {
-//        [list removeTag:tagView];
-    } else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                        message:[NSString stringWithFormat:@"You tapped tag %@", tagView.text]
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
-        [alert show];
-    }
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -61,6 +48,7 @@
                             @"change class",
                             @"as",
                             @"DWTagList",
+                            @"and",
                             @"Add tags in code"
                             ]];
     
@@ -114,6 +102,30 @@
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     } else {
         return YES;
+    }
+}
+
+#pragma mark - TagList Delegate
+
+-(void)tagList:(DWTagList *)list selectedTag:(DWTagView *)tagView {
+    if (list == self.xibList) {
+        [list removeTag:tagView];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
+                                                        message:[NSString stringWithFormat:@"You tapped tag %@", tagView.text]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+-(void)tagListPreparedAllTags:(DWTagList *)list {
+    if (list == self.xibList) {
+        DWTagView *tag = [self.xibList tagWithText:@"and"];
+        tag.textColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
+        tag.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1];
+        tag.borderColor = [UIColor redColor].CGColor;
     }
 }
 
