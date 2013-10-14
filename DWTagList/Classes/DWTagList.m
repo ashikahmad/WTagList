@@ -20,7 +20,7 @@
 #define TEXT_SHADOW_OFFSET CGSizeMake(0.0f, 1.0f)
 #define BORDER_COLOR [UIColor lightGrayColor].CGColor
 #define BORDER_WIDTH 1.0f
-#define HIGHLIGHTED_BACKGROUND_COLOR [UIColor colorWithRed:0.40 green:0.80 blue:1.00 alpha:0.5]
+//#define HIGHLIGHTED_BACKGROUND_COLOR [UIColor colorWithRed:0.40 green:0.80 blue:1.00 alpha:0.5]
 #define DEFAULT_AUTOMATIC_RESIZE NO
 
 @interface DWTagList()
@@ -28,6 +28,16 @@
 @property (nonatomic, assign) CGFloat maxTagWidth;
 
 //- (void)touchedTag:(id)sender;
+
+@end
+
+@interface DWTagView ()
+
+@property (nonatomic, strong) DWTagList *parentList;
+@property (nonatomic, strong) UIButton  *button;
+@property (nonatomic, strong) UILabel   *label;
+
+-(void) applyParentTheme;
 
 @end
 
@@ -39,12 +49,19 @@
 -(void) basicInit {
     [self setClipsToBounds:YES];
     self.automaticResize = DEFAULT_AUTOMATIC_RESIZE;
-    self.highlightedBackgroundColor = HIGHLIGHTED_BACKGROUND_COLOR;
+//    self.highlightedBackgroundColor = HIGHLIGHTED_BACKGROUND_COLOR;
     self.font = [UIFont systemFontOfSize:FONT_SIZE_DEFAULT];
     self.labelMargin = LABEL_MARGIN_DEFAULT;
     self.bottomMargin = BOTTOM_MARGIN_DEFAULT;
     self.horizontalPadding = HORIZONTAL_PADDING_DEFAULT;
     self.verticalPadding = VERTICAL_PADDING_DEFAULT;
+    
+    self.defaultTextColor = TEXT_COLOR;
+    self.defaultTextShadowColor = TEXT_SHADOW_COLOR;
+    self.defaultTextShadowOffset = TEXT_SHADOW_OFFSET;
+    self.defaultCornerRadius = CORNER_RADIUS;
+    self.defaultBorderColor = [UIColor colorWithCGColor:BORDER_COLOR];
+    self.defaultBorderWidth = BORDER_WIDTH;
     
     self.layoutType = DWTagLayoutDefault;
 }
@@ -64,6 +81,14 @@
         [self basicInit];
     }
     return self;
+}
+
+-(void)applyDefaultTheme {
+    for (UIView *v in self.subviews) {
+        if ([v isKindOfClass:[DWTagView class]]) {
+            [(DWTagView *)v applyParentTheme];
+        }
+    }
 }
 
 - (void)setTags:(NSArray *)array
@@ -117,17 +142,17 @@
     }
 }
 
-- (void)setTagBackgroundColor:(UIColor *)color
-{
-    lblBackgroundColor = color;
-    [self setNeedsLayout];
-}
+//- (void)setTagBackgroundColor:(UIColor *)color
+//{
+//    lblBackgroundColor = color;
+//    [self setNeedsLayout];
+//}
 
-- (void)setTagHighlightColor:(UIColor *)color
-{
-    self.highlightedBackgroundColor = color;
-    [self setNeedsLayout];
-}
+//- (void)setTagHighlightColor:(UIColor *)color
+//{
+//    self.highlightedBackgroundColor = color;
+//    [self setNeedsLayout];
+//}
 
 - (void)setViewOnly:(BOOL)viewOnly
 {
@@ -222,22 +247,11 @@
         if (self.layoutType != DWTagLayoutFlow) {
             maxWidth = MAX(maxWidth, CGRectGetMaxX(tagView.frame)+self.labelMargin);
         }
-
-        [tagView setBackgroundColor:[self getBackgroundColor]];
-
-//        // Davide Cenzi, added gesture recognizer to label
-//        UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(touchedTag:)];
-//        // if labelView is not set userInteractionEnabled, you must do so
-//        [tagView setUserInteractionEnabled:YES];
-//        [tagView addGestureRecognizer:gesture];
         
         [self addSubview:tagView];
 
         if (!_viewOnly) {
-            [tagView.button addTarget:self action:@selector(touchDownInside:) forControlEvents:UIControlEventTouchDown];
             [tagView.button addTarget:self action:@selector(touchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-            [tagView.button addTarget:self action:@selector(touchDragExit:) forControlEvents:UIControlEventTouchDragExit];
-            [tagView.button addTarget:self action:@selector(touchDragInside:) forControlEvents:UIControlEventTouchDragInside];
         }
     }
 
@@ -265,16 +279,9 @@
     return sizeFit;
 }
 
-- (void)touchDownInside:(id)sender
-{
-    UIButton *button = (UIButton*)sender;
-    [[button superview] setBackgroundColor:self.highlightedBackgroundColor];
-}
-
 - (void)touchUpInside:(id)sender
 {
     UIButton *button = (UIButton*)sender;
-    [[button superview] setBackgroundColor:[self getBackgroundColor]];
     if(button
        && [button.superview isKindOfClass:[DWTagView class]]
        && self.tagDelegate
@@ -282,37 +289,20 @@
         [self.tagDelegate tagList:self selectedTag:(DWTagView *)button.superview];
 }
 
-- (void)touchDragExit:(id)sender
-{
-    UIButton *button = (UIButton*)sender;
-    [[button superview] setBackgroundColor:[self getBackgroundColor]];
-}
-
-- (void)touchDragInside:(id)sender
-{
-    UIButton *button = (UIButton*)sender;
-    [[button superview] setBackgroundColor:[self getBackgroundColor]];
-}
-     
-- (UIColor *)getBackgroundColor
-{
-     if (!lblBackgroundColor) {
-         return BACKGROUND_COLOR;
-     } else {
-         return lblBackgroundColor;
-     }
-}
+//- (UIColor *)getBackgroundColor
+//{
+//     if (!lblBackgroundColor) {
+//         return BACKGROUND_COLOR;
+//     } else {
+//         return lblBackgroundColor;
+//     }
+//}
 
 - (void)dealloc
 {
-    lblBackgroundColor = nil;
+//    lblBackgroundColor = nil;
 }
 
-@end
-
-
-@interface DWTagView ()
-@property (nonatomic, strong) DWTagList *parentList;
 @end
 
 @implementation DWTagView
@@ -323,9 +313,6 @@
         self.parentList = parentList;
         
         _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        [_label setTextColor:TEXT_COLOR];
-        [_label setShadowColor:TEXT_SHADOW_COLOR];
-        [_label setShadowOffset:TEXT_SHADOW_OFFSET];
         [_label setBackgroundColor:[UIColor clearColor]];
         [_label setTextAlignment:NSTextAlignmentCenter];
         [self addSubview:_label];
@@ -336,11 +323,22 @@
         [self addSubview:_button];
         
         [self.layer setMasksToBounds:YES];
-        [self.layer setCornerRadius:CORNER_RADIUS];
-        [self.layer setBorderColor:BORDER_COLOR];
-        [self.layer setBorderWidth: BORDER_WIDTH];
+        
+        [self applyParentTheme];
     }
     return self;
+}
+
+-(void)applyParentTheme {
+    self.backgroundColor = self.parentList.defaultBackgroundColor;
+    
+    self.textColor = self.parentList.defaultTextColor;
+    self.textShadowColor = self.parentList.defaultTextShadowColor;
+    self.textShadowOffset = self.parentList.defaultTextShadowOffset;
+    
+    self.cornerRadius = self.parentList.defaultCornerRadius;
+    self.borderColor = self.parentList.defaultBorderColor.CGColor;
+    self.borderWidth = self.parentList.defaultBorderWidth;
 }
 
 -(void)setText:(NSString *)text {
@@ -361,5 +359,25 @@
 }
 
 -(NSString *)text { return self.label.text; }
+
+-(void)setTextColor:(UIColor *)textColor
+{ self.label.textColor = textColor; }
+-(void)setTextShadowColor:(UIColor *)textShadowColor
+{ self.label.shadowColor = textShadowColor; }
+-(void)setTextShadowOffset:(CGSize)textShadowOffset
+{ self.label.shadowOffset = textShadowOffset; }
+-(void)setCornerRadius:(CGFloat)cornerRadius
+{ self.layer.cornerRadius = cornerRadius; }
+-(void)setBorderColor:(CGColorRef)borderColor
+{ self.layer.borderColor = borderColor; }
+-(void)setBorderWidth:(CGFloat)borderWidth
+{ self.layer.borderWidth = borderWidth; }
+
+-(UIColor *)textColor { return self.label.textColor; }
+-(UIColor *)textShadowColor { return self.label.shadowColor; }
+-(CGSize)textShadowOffset { return self.label.shadowOffset; }
+-(CGFloat)cornerRadius { return self.layer.cornerRadius; }
+-(CGColorRef)borderColor { return self.layer.borderColor; }
+-(CGFloat)borderWidth { return self.layer.borderWidth; }
 
 @end

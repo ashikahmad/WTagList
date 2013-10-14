@@ -27,7 +27,7 @@
 
 -(void)tagList:(DWTagList *)list selectedTag:(DWTagView *)tagView {
     if (list == self.xibList) {
-        [list removeTag:tagView];
+//        [list removeTag:tagView];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
                                                         message:[NSString stringWithFormat:@"You tapped tag %@", tagView.text]
@@ -63,6 +63,8 @@
                             @"DWTagList",
                             @"Add tags in code"
                             ]];
+    
+// xibList have set attributes in XIB keyPath
     
     // debug
     tagList.layer.borderWidth = 1;
