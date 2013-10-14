@@ -7,6 +7,17 @@
 
 #import <UIKit/UIKit.h>
 
+//-------------------------------------------
+/// Layout Types : How to layout tags in list
+//-------------------------------------------
+
+typedef enum {
+    DWTagLayoutFlow,
+    DWTagLayoutVertical,
+    DWTagLayoutHorizontal,
+    DWTagLayoutDefault = DWTagLayoutFlow
+} DWTagLayout;
+
 @class DWTagView;
 
 @protocol DWTagListDelegate <NSObject>
@@ -36,7 +47,7 @@
 @property (nonatomic, assign) CGFloat verticalPadding;
 @property (nonatomic, assign) CGFloat minimumWidth;
 
-@property (nonatomic, strong) DWTagView *selectedTag;
+@property (nonatomic, assign) DWTagLayout layoutType;
 
 - (void)setTagBackgroundColor:(UIColor *)color;
 - (void)setTagHighlightColor:(UIColor *)color;

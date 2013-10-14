@@ -31,12 +31,10 @@
 
 @implementation DWTagList
 
-@synthesize textArray, automaticResize;
-@synthesize tagDelegate = _tagDelegate;
+@synthesize textArray;
+@synthesize tagDelegate = _tagDelegate, automaticResize = _automaticResize;
 
 -(void) basicInit {
-    self.selectedTag = nil;
-    
     [self setClipsToBounds:YES];
     self.automaticResize = DEFAULT_AUTOMATIC_RESIZE;
     self.highlightedBackgroundColor = HIGHLIGHTED_BACKGROUND_COLOR;
@@ -45,6 +43,8 @@
     self.bottomMargin = BOTTOM_MARGIN_DEFAULT;
     self.horizontalPadding = HORIZONTAL_PADDING_DEFAULT;
     self.verticalPadding = VERTICAL_PADDING_DEFAULT;
+    
+    self.layoutType = DWTagLayoutDefault;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -68,13 +68,8 @@
 {
     textArray = [[NSArray alloc] initWithArray:array];
     sizeFit = CGSizeZero;
-    if (automaticResize) {
-        [self display];
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, sizeFit.width, sizeFit.height);
-    }
-    else {
-        [self setNeedsLayout];
-    }
+    
+    [self setNeedsLayout];
 }
 
 - (void)setTagBackgroundColor:(UIColor *)color
@@ -95,6 +90,17 @@
         _viewOnly = viewOnly;
         [self setNeedsLayout];
     }
+}
+
+-(void)setLayoutType:(DWTagLayout)layoutType {
+    _layoutType = layoutType;
+    [self display];
+}
+
+-(void)setAutomaticResize:(BOOL)automaticResize {
+    _automaticResize = automaticResize;
+    if(automaticResize)
+        [self sizeToFit];
 }
 
 //- (void)touchedTag:(id)sender
@@ -130,6 +136,7 @@
     }
 
     CGRect previousFrame = CGRectZero;
+    CGFloat maxWidth = 0;
     BOOL lineStart = YES;
     
     for (NSString *text in textArray) {
@@ -142,15 +149,23 @@
             tagView = [[DWTagView alloc] init];
         }
         
+        CGFloat maxTagWidth = MAXFLOAT;
+        if (self.layoutType != DWTagLayoutHorizontal) {
+            maxTagWidth = self.frame.size.width - self.labelMargin;
+        }
+        
         [tagView updateWithString:text
                            font:self.font
-              constrainedToWidth:self.frame.size.width - self.labelMargin
-                        padding:CGSizeMake(self.horizontalPadding, self.verticalPadding)
+               constrainedToWidth:maxTagWidth
+                          padding:CGSizeMake(self.horizontalPadding, self.verticalPadding)
                      minimumWidth:self.minimumWidth
          ];
         
-        if (!lineStart
-            && previousFrame.origin.x + previousFrame.size.width + tagView.frame.size.width + self.labelMargin > self.frame.size.width)
+        if (self.layoutType == DWTagLayoutVertical
+            ||
+            (self.layoutType == DWTagLayoutFlow
+            && !lineStart
+            && previousFrame.origin.x + previousFrame.size.width + tagView.frame.size.width + self.labelMargin > self.frame.size.width))
             lineStart = YES;
         
         CGRect newRect = CGRectZero;
@@ -165,6 +180,9 @@
 
         previousFrame = tagView.frame;
         lineStart = NO;
+        if (self.layoutType != DWTagLayoutFlow) {
+            maxWidth = MAX(maxWidth, CGRectGetMaxX(tagView.frame)+self.labelMargin);
+        }
 
         [tagView setBackgroundColor:[self getBackgroundColor]];
 
@@ -184,8 +202,23 @@
         }
     }
 
-    sizeFit = CGSizeMake(self.frame.size.width, previousFrame.origin.y + previousFrame.size.height + self.bottomMargin + 1.0f);
+    if (self.layoutType == DWTagLayoutFlow) {
+        sizeFit = CGSizeMake(self.frame.size.width, previousFrame.origin.y + previousFrame.size.height + self.bottomMargin + 1.0f);
+    } else {
+        sizeFit = CGSizeMake(maxWidth, previousFrame.origin.y + previousFrame.size.height + self.bottomMargin + 1.0f);
+        
+    }
     self.contentSize = sizeFit;
+    
+    if (self.automaticResize) {
+        [self sizeToFit];
+    }
+}
+
+-(void)sizeToFit {
+    if (self.subviews.count) {
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, MIN(sizeFit.width, self.frame.size.width), sizeFit.height);
+    }
 }
 
 - (CGSize)fittedSize
