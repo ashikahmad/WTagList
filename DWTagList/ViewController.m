@@ -25,14 +25,17 @@
     [self removeKeyboard:nil];
 }
 
-- (void)selectedTag:(NSString *)tagName{
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
-                                                    message:[NSString stringWithFormat:@"You tapped tag %@", tagName]
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Ok"
-                                          otherButtonTitles:nil];
-    [alert show];
+-(void)tagList:(DWTagList *)list selectedTag:(DWTagView *)tagView {
+    if (list == self.xibList) {
+        [list removeTag:tagView];
+    } else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
+                                                        message:[NSString stringWithFormat:@"You tapped tag %@", tagView.text]
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (void)viewDidLoad
@@ -50,6 +53,7 @@
     [tagList setTagDelegate:self];
     [self.view addSubview:tagList];
     
+    self.xibList.tagDelegate = self;
     [self.xibList setTags:@[@"Add",
                             @"a",
                             @"scrollView",

@@ -18,13 +18,13 @@ typedef enum {
     DWTagLayoutDefault = DWTagLayoutFlow
 } DWTagLayout;
 
-@class DWTagView;
+@class DWTagList, DWTagView;
 
 @protocol DWTagListDelegate <NSObject>
 
 @required
 
-- (void)selectedTag:(NSString*)tagName;
+- (void)tagList:(DWTagList *) list selectedTag:(DWTagView *)tagView;
 
 @end
 
@@ -52,8 +52,16 @@ typedef enum {
 - (void)setTagBackgroundColor:(UIColor *)color;
 - (void)setTagHighlightColor:(UIColor *)color;
 
+// add/set
 - (void)setTags:(NSArray *)array;
 - (void)addTag:(NSString *)tagText;
+
+// find
+-(DWTagView *) tagWithText:(NSString *) tagText;
+
+// remove
+- (void)removeTagWithText:(NSString *) tagText;
+- (void)removeTag:(DWTagView *) tag;
 
 - (void)display;
 - (CGSize)fittedSize;
@@ -64,8 +72,8 @@ typedef enum {
 
 @property (nonatomic, strong) UIButton      *button;
 @property (nonatomic, strong) UILabel       *label;
+@property (nonatomic, readwrite) NSString *text;
 
-- (void)updateWithString:(NSString*)text font:(UIFont*)font constrainedToWidth:(CGFloat)maxWidth padding:(CGSize)padding minimumWidth:(CGFloat)minimumWidth;
-- (void)setLabelText:(NSString*)text;
+- (id) initForList:(DWTagList *) parentList;
 
 @end

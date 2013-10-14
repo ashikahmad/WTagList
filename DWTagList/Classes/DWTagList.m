@@ -25,6 +25,8 @@
 
 @interface DWTagList()
 
+@property (nonatomic, assign) CGFloat maxTagWidth;
+
 //- (void)touchedTag:(id)sender;
 
 @end
@@ -74,12 +76,45 @@
 
 - (void)addTag:(NSString *)tagText
 {
-    if(textArray)
-        textArray = [textArray arrayByAddingObject:tagText];
-    else
+    if(textArray){
+        NSMutableArray *arr = [textArray mutableCopy];
+        [arr addObject:tagText];
+        textArray = arr;
+    } else
         textArray = @[tagText];
     
     [self setNeedsLayout];
+}
+
+-(DWTagView *)tagWithText:(NSString *)tagText {
+    int index = [self.textArray indexOfObject:tagText];
+    if (index != NSNotFound
+        && index < self.subviews.count) {
+        UIView *v = [self.subviews objectAtIndex:index];
+        // Reassure
+        if ([v isKindOfClass:[DWTagView class]]
+            && [((DWTagView *)v).text isEqualToString:tagText]) {
+            return (DWTagView *)v;
+        }
+    }
+    return nil;
+}
+
+- (void)removeTagWithText:(NSString *)tagText {
+    DWTagView *tag = [self tagWithText:tagText];
+    [self removeTag:tag];
+}
+
+-(void)removeTag:(DWTagView *)tag {
+    if (tag) {
+        [tag removeFromSuperview];
+        
+        NSMutableArray *arr = [self.textArray mutableCopy];
+        [arr removeObject:tag.text];
+        self.textArray = arr;
+        
+        [self setNeedsDisplay];
+    }
 }
 
 - (void)setTagBackgroundColor:(UIColor *)color
@@ -130,6 +165,11 @@
 
 - (void)display
 {
+    self.maxTagWidth = MAXFLOAT;
+    if (self.layoutType != DWTagLayoutHorizontal) {
+        self.maxTagWidth = self.frame.size.width - self.labelMargin;
+    }
+    
     NSMutableArray *tagViews = [NSMutableArray array];
     for (UIView *subview in [self subviews]) {
         if ([subview isKindOfClass:[DWTagView class]]) {
@@ -156,21 +196,10 @@
             [tagViews removeLastObject];
         }
         else {
-            tagView = [[DWTagView alloc] init];
+            tagView = [[DWTagView alloc] initForList:self];
         }
         
-        CGFloat maxTagWidth = MAXFLOAT;
-        if (self.layoutType != DWTagLayoutHorizontal) {
-            maxTagWidth = self.frame.size.width - self.labelMargin;
-        }
-        
-        [tagView updateWithString:text
-                           font:self.font
-               constrainedToWidth:maxTagWidth
-                          padding:CGSizeMake(self.horizontalPadding, self.verticalPadding)
-                     minimumWidth:self.minimumWidth
-         ];
-        
+        tagView.text = text;
         if (self.layoutType == DWTagLayoutVertical
             ||
             (self.layoutType == DWTagLayoutFlow
@@ -246,8 +275,11 @@
 {
     UIButton *button = (UIButton*)sender;
     [[button superview] setBackgroundColor:[self getBackgroundColor]];
-    if(button && self.tagDelegate && [self.tagDelegate respondsToSelector:@selector(selectedTag:)])
-        [self.tagDelegate selectedTag:button.accessibilityLabel];
+    if(button
+       && [button.superview isKindOfClass:[DWTagView class]]
+       && self.tagDelegate
+       && [self.tagDelegate respondsToSelector:@selector(tagList:selectedTag:)])
+        [self.tagDelegate tagList:self selectedTag:(DWTagView *)button.superview];
 }
 
 - (void)touchDragExit:(id)sender
@@ -279,11 +311,17 @@
 @end
 
 
+@interface DWTagView ()
+@property (nonatomic, strong) DWTagList *parentList;
+@end
+
 @implementation DWTagView
 
-- (id)init {
+- (id)initForList:(DWTagList *)parentList {
     self = [super init];
     if (self) {
+        self.parentList = parentList;
+        
         _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         [_label setTextColor:TEXT_COLOR];
         [_label setShadowColor:TEXT_SHADOW_COLOR];
@@ -305,27 +343,23 @@
     return self;
 }
 
-- (void)updateWithString:(NSString*)text font:(UIFont*)font constrainedToWidth:(CGFloat)maxWidth padding:(CGSize)padding minimumWidth:(CGFloat)minimumWidth
-{
-    float maxTextWidth = maxWidth - padding.width*2;
-    float minimumTextWidth = minimumWidth - padding.width*2;
-    CGSize textSize = [text sizeWithFont:font forWidth:maxTextWidth lineBreakMode:NSLineBreakByTruncatingTail];
+-(void)setText:(NSString *)text {
+    self.label.text = text;
+    self.label.font = self.parentList.font;
+    
+    float maxTextWidth = self.parentList.maxTagWidth - self.parentList.horizontalPadding*2;
+    float minimumTextWidth = self.parentList.minimumWidth - self.parentList.horizontalPadding*2;
+    CGSize textSize = [text sizeWithFont:self.label.font forWidth:maxTextWidth lineBreakMode:NSLineBreakByTruncatingTail];
     
     textSize.width = MAX(textSize.width, minimumTextWidth);
-    textSize.height += padding.height*2;
-
-    self.frame = CGRectMake(0, 0, textSize.width+padding.width*2, textSize.height);
-    _label.frame = CGRectMake(padding.width, 0, MIN(textSize.width, self.frame.size.width), textSize.height);
-    _label.font = font;
-    _label.text = text;
+    textSize.height += self.parentList.verticalPadding*2;
+    
+    self.frame = CGRectMake(0, 0, textSize.width+self.parentList.horizontalPadding*2, textSize.height);
+    self.label.frame = CGRectMake(self.parentList.horizontalPadding, 0, MIN(textSize.width, self.frame.size.width), textSize.height);
     
     [_button setAccessibilityLabel:self.label.text];
 }
 
-- (void)setLabelText:(NSString*)text
-{
-    [_label setText:text];
-}
-
+-(NSString *)text { return self.label.text; }
 
 @end
