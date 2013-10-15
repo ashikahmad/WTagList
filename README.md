@@ -14,7 +14,7 @@ Create a list of tags from an NSArray to show in a view with customisable fonts,
 
 ### Add To View
 
-1. In code:
+* In code:
 ```obj-c
     // Initalise and set the frame of the tag list
     tagList = [[WTagList alloc] initWithFrame:CGRectMake(20.0f, 70.0f, 280.0f, 300.0f)];
@@ -22,10 +22,10 @@ Create a list of tags from an NSArray to show in a view with customisable fonts,
     // Add the taglist to your UIView
     [self.view addSubview:tagList];
 ```
-2. In XIB
+* In XIB
 
-    (a) Add a UIScrollView in your view.
-    (b) Change class as `WTagList`.
+    1. Add a UIScrollView in your view.
+    2. Change class as `WTagList`.
 
 ### Set Tags
 ```obj-c
@@ -35,7 +35,7 @@ Create a list of tags from an NSArray to show in a view with customisable fonts,
 ```
 ### Other Features
 
-1. Add/remove/find
+* Add/remove/find
 ```obj-c
     // Add Tags
     [taglist addTag:@"Another Tag"];
@@ -46,7 +46,7 @@ Create a list of tags from an NSArray to show in a view with customisable fonts,
     // Find Tag
     TagView *tag = [tagList tagWithText:@"Foo"];
 ```
-2.Layout, AutoSort, Animate Changes
+* Layout, AutoSort, Animate Changes
 ```obj-c
     // Default is WTagLayoutFlow, Other options: WTagLayoutHorizontal/WTagLayoutVertical
     tagList.layout = WTagLayoutHorizontal
@@ -60,7 +60,7 @@ Create a list of tags from an NSArray to show in a view with customisable fonts,
 
 ## Customisation
 
-In `DWTagList.m` there are a number of customisable options to change the layout and the aesthetics of the tags:
+In `WTagList.m` there are a number of customisable options to change the layout and the aesthetics of the tags:
 
     #define CORNER_RADIUS 10.0f
     #define LABEL_MARGIN 5.0f
