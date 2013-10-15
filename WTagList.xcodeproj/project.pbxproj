@@ -16,33 +16,30 @@
 		04DEC61A15A897B80034CA79 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEC61915A897B80034CA79 /* ViewController.m */; };
 		04DEC61D15A897B80034CA79 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DEC61B15A897B80034CA79 /* ViewController_iPhone.xib */; };
 		04DEC62015A897B80034CA79 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04DEC61E15A897B80034CA79 /* ViewController_iPad.xib */; };
-		04DEC62915A8988A0034CA79 /* DWTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEC62815A8988A0034CA79 /* DWTagList.m */; };
+		04DEC62915A8988A0034CA79 /* WTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 04DEC62815A8988A0034CA79 /* WTagList.m */; };
 		04DEC62B15A898EF0034CA79 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04DEC62A15A898EF0034CA79 /* QuartzCore.framework */; };
 		2D195BD416FBAC890069A5E3 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2D195BD316FBAC890069A5E3 /* Default-568h@2x.png */; };
-		3BB59493180AA315000C1350 /* WTagList.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BB59492180AA315000C1350 /* WTagList.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		04DEC60215A897B70034CA79 /* DWTagList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DWTagList.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04DEC60215A897B70034CA79 /* WTagList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WTagList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04DEC60615A897B70034CA79 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		04DEC60815A897B80034CA79 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		04DEC60A15A897B80034CA79 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		04DEC60E15A897B80034CA79 /* DWTagList-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "DWTagList-Info.plist"; sourceTree = "<group>"; };
+		04DEC60E15A897B80034CA79 /* WTagList-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WTagList-Info.plist"; sourceTree = "<group>"; };
 		04DEC61015A897B80034CA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		04DEC61215A897B80034CA79 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		04DEC61415A897B80034CA79 /* DWTagList-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DWTagList-Prefix.pch"; sourceTree = "<group>"; };
+		04DEC61415A897B80034CA79 /* WTagList-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WTagList-Prefix.pch"; sourceTree = "<group>"; };
 		04DEC61515A897B80034CA79 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		04DEC61615A897B80034CA79 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		04DEC61815A897B80034CA79 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		04DEC61915A897B80034CA79 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		04DEC61C15A897B80034CA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		04DEC61F15A897B80034CA79 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
-		04DEC62715A8988A0034CA79 /* DWTagList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DWTagList.h; sourceTree = "<group>"; };
-		04DEC62815A8988A0034CA79 /* DWTagList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DWTagList.m; sourceTree = "<group>"; };
+		04DEC62715A8988A0034CA79 /* WTagList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WTagList.h; sourceTree = "<group>"; };
+		04DEC62815A8988A0034CA79 /* WTagList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTagList.m; sourceTree = "<group>"; };
 		04DEC62A15A898EF0034CA79 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		2D195BD316FBAC890069A5E3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		3BB59491180AA315000C1350 /* WTagList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WTagList.h; sourceTree = "<group>"; };
-		3BB59492180AA315000C1350 /* WTagList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WTagList.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				2D195BD316FBAC890069A5E3 /* Default-568h@2x.png */,
-				04DEC60C15A897B80034CA79 /* DWTagList */,
+				04DEC60C15A897B80034CA79 /* WTagList */,
 				04DEC60515A897B70034CA79 /* Frameworks */,
 				04DEC60315A897B70034CA79 /* Products */,
 			);
@@ -73,7 +70,7 @@
 		04DEC60315A897B70034CA79 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				04DEC60215A897B70034CA79 /* DWTagList.app */,
+				04DEC60215A897B70034CA79 /* WTagList.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,7 +86,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		04DEC60C15A897B80034CA79 /* DWTagList */ = {
+		04DEC60C15A897B80034CA79 /* WTagList */ = {
 			isa = PBXGroup;
 			children = (
 				04DEC62615A8988A0034CA79 /* Classes */,
@@ -101,16 +98,16 @@
 				04DEC61E15A897B80034CA79 /* ViewController_iPad.xib */,
 				04DEC60D15A897B80034CA79 /* Supporting Files */,
 			);
-			path = DWTagList;
+			path = WTagList;
 			sourceTree = "<group>";
 		};
 		04DEC60D15A897B80034CA79 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				04DEC60E15A897B80034CA79 /* DWTagList-Info.plist */,
+				04DEC60E15A897B80034CA79 /* WTagList-Info.plist */,
 				04DEC60F15A897B80034CA79 /* InfoPlist.strings */,
 				04DEC61215A897B80034CA79 /* main.m */,
-				04DEC61415A897B80034CA79 /* DWTagList-Prefix.pch */,
+				04DEC61415A897B80034CA79 /* WTagList-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -118,10 +115,8 @@
 		04DEC62615A8988A0034CA79 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				04DEC62715A8988A0034CA79 /* DWTagList.h */,
-				04DEC62815A8988A0034CA79 /* DWTagList.m */,
-				3BB59491180AA315000C1350 /* WTagList.h */,
-				3BB59492180AA315000C1350 /* WTagList.m */,
+				04DEC62715A8988A0034CA79 /* WTagList.h */,
+				04DEC62815A8988A0034CA79 /* WTagList.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -129,9 +124,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		04DEC60115A897B70034CA79 /* DWTagList */ = {
+		04DEC60115A897B70034CA79 /* WTagList */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 04DEC62315A897B80034CA79 /* Build configuration list for PBXNativeTarget "DWTagList" */;
+			buildConfigurationList = 04DEC62315A897B80034CA79 /* Build configuration list for PBXNativeTarget "WTagList" */;
 			buildPhases = (
 				04DEC5FE15A897B70034CA79 /* Sources */,
 				04DEC5FF15A897B70034CA79 /* Frameworks */,
@@ -141,9 +136,9 @@
 			);
 			dependencies = (
 			);
-			name = DWTagList;
+			name = WTagList;
 			productName = DWTagList;
-			productReference = 04DEC60215A897B70034CA79 /* DWTagList.app */;
+			productReference = 04DEC60215A897B70034CA79 /* WTagList.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -155,7 +150,7 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Terracoding LTD";
 			};
-			buildConfigurationList = 04DEC5FC15A897B70034CA79 /* Build configuration list for PBXProject "DWTagList" */;
+			buildConfigurationList = 04DEC5FC15A897B70034CA79 /* Build configuration list for PBXProject "WTagList" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -167,7 +162,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				04DEC60115A897B70034CA79 /* DWTagList */,
+				04DEC60115A897B70034CA79 /* WTagList */,
 			);
 		};
 /* End PBXProject section */
@@ -191,11 +186,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BB59493180AA315000C1350 /* WTagList.m in Sources */,
 				04DEC61315A897B80034CA79 /* main.m in Sources */,
 				04DEC61715A897B80034CA79 /* AppDelegate.m in Sources */,
 				04DEC61A15A897B80034CA79 /* ViewController.m in Sources */,
-				04DEC62915A8988A0034CA79 /* DWTagList.m in Sources */,
+				04DEC62915A8988A0034CA79 /* WTagList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,9 +292,9 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DWTagList/DWTagList-Prefix.pch";
-				INFOPLIST_FILE = "DWTagList/DWTagList-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "DWTagList/WTagList-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/WTagList/WTagList-Info.plist";
+				PRODUCT_NAME = WTagList;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -310,9 +304,9 @@
 			buildSettings = {
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "DWTagList/DWTagList-Prefix.pch";
-				INFOPLIST_FILE = "DWTagList/DWTagList-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "DWTagList/WTagList-Prefix.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/WTagList/WTagList-Info.plist";
+				PRODUCT_NAME = WTagList;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -320,7 +314,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		04DEC5FC15A897B70034CA79 /* Build configuration list for PBXProject "DWTagList" */ = {
+		04DEC5FC15A897B70034CA79 /* Build configuration list for PBXProject "WTagList" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				04DEC62115A897B80034CA79 /* Debug */,
@@ -329,7 +323,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		04DEC62315A897B80034CA79 /* Build configuration list for PBXNativeTarget "DWTagList" */ = {
+		04DEC62315A897B80034CA79 /* Build configuration list for PBXNativeTarget "WTagList" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				04DEC62415A897B80034CA79 /* Debug */,
