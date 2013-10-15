@@ -23,6 +23,8 @@ typedef enum {
 @protocol DWTagListDelegate <NSObject>
 
 @optional
+- (void)tagList:(DWTagList *) list removedTags:(NSArray *) tags;
+- (void)tagList:(DWTagList *) list addedTags:(NSArray *) tags;
 - (void)tagListPreparedAllTags:(DWTagList *) list;
 
 @required
@@ -32,12 +34,12 @@ typedef enum {
 
 @interface DWTagList : UIScrollView
 {
-    NSArray *textArray;
     CGSize sizeFit;
-//    UIColor *lblBackgroundColor;
 }
 
+@property (nonatomic, assign) BOOL animateChanges;
 @property (nonatomic) BOOL viewOnly;
+@property (nonatomic, assign) BOOL autoSort;
 @property (nonatomic, strong) NSArray *textArray;
 @property (nonatomic, weak) id<DWTagListDelegate> tagDelegate;
 //@property (nonatomic, strong) UIColor *highlightedBackgroundColor;
@@ -60,8 +62,6 @@ typedef enum {
 
 @property (nonatomic, assign) DWTagLayout layoutType;
 
-//- (void)setTagBackgroundColor:(UIColor *)color;
-//- (void)setTagHighlightColor:(UIColor *)color;
 
 /// any properties starting with default* will not be applied autometically. Invoke this method to force.
 -(void) applyDefaultTheme;
@@ -69,9 +69,11 @@ typedef enum {
 // add/set
 - (void)setTags:(NSArray *)array;
 - (void)addTag:(NSString *)tagText;
+- (void) sortTags;
 
 // find
 -(DWTagView *) tagWithText:(NSString *) tagText;
+-(NSArray *) tagsWithText:(NSString *) tagText;
 
 /**
  removes tags with same test as tagText.
@@ -84,7 +86,6 @@ typedef enum {
  */
 - (void)removeTag:(DWTagView *) tag;
 
-- (void)display;
 - (CGSize)fittedSize;
 
 @end

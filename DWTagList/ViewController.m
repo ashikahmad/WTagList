@@ -16,13 +16,24 @@
 
 @implementation ViewController
 
+- (IBAction)sortPrefChanged:(id)sender {
+    if ([sender isKindOfClass:[UISwitch class]]) {
+        self.xibList.autoSort = [(UISwitch *)sender isOn];
+        [self.xibList setNeedsLayout];
+    }
+}
+
 - (IBAction)addNewTag:(id)sender {
     NSString *text = self.tagField.text;
     if (text.length) {
         [self.xibList addTag:text];
     }
     self.tagField.text = @"";
-    [self removeKeyboard:nil];
+    
+    if([sender isKindOfClass:[UIButton class]])
+        [self removeKeyboard:nil];
+    else
+        [self.tagField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.5];
 }
 
 - (void)viewDidLoad

@@ -25,9 +25,11 @@
 
 @interface DWTagList()
 
+@property (nonatomic, assign) BOOL isTagsSettingUp;
 @property (nonatomic, assign) CGFloat maxTagWidth;
 
 //- (void)touchedTag:(id)sender;
+- (void)display:(BOOL)animated;
 
 @end
 
@@ -43,11 +45,14 @@
 
 @implementation DWTagList
 
-@synthesize textArray;
 @synthesize tagDelegate = _tagDelegate, automaticResize = _automaticResize;
 
 -(void) basicInit {
+    self.isTagsSettingUp = NO;
+    self.autoSort = NO;
+    
     [self setClipsToBounds:YES];
+    self.animateChanges = NO;
     self.automaticResize = DEFAULT_AUTOMATIC_RESIZE;
 //    self.highlightedBackgroundColor = HIGHLIGHTED_BACKGROUND_COLOR;
     self.font = [UIFont systemFontOfSize:FONT_SIZE_DEFAULT];
@@ -91,68 +96,79 @@
     }
 }
 
+-(void) sortTags {
+    self.textArray = [self.textArray sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
+    [self setNeedsLayout];
+}
+
 - (void)setTags:(NSArray *)array
 {
-    textArray = [[NSArray alloc] initWithArray:array];
+    self.isTagsSettingUp = YES;
+    
+    self.textArray = [[NSArray alloc] initWithArray:array];
     sizeFit = CGSizeZero;
     
-    [self setNeedsLayout];
+//    if(self.autoSort)
+//        [self sortTags];
+//    else
+        [self setNeedsLayout];
 }
 
 - (void)addTag:(NSString *)tagText
 {
-    if(textArray){
-        NSMutableArray *arr = [textArray mutableCopy];
-        [arr addObject:tagText];
-        textArray = arr;
+    if(self.textArray){
+        self.textArray = [self.textArray arrayByAddingObject:tagText];
     } else
-        textArray = @[tagText];
+        self.textArray = @[tagText];
     
-    [self setNeedsLayout];
+//    if(self.autoSort)
+//        [self sortTags];
+//    else
+        [self setNeedsLayout];
 }
 
 -(DWTagView *)tagWithText:(NSString *)tagText {
-    int index = [self.textArray indexOfObject:tagText];
-    if (index != NSNotFound
-        && index < self.subviews.count) {
-        UIView *v = [self.subviews objectAtIndex:index];
-        // Reassure
+    
+    for (UIView *v in self.subviews) {
         if ([v isKindOfClass:[DWTagView class]]
             && [((DWTagView *)v).text isEqualToString:tagText]) {
-            return (DWTagView *)v;
+            return (DWTagView *) v;
         }
     }
+    
     return nil;
 }
 
+-(NSArray *)tagsWithText:(NSString *)tagText {
+    NSMutableArray *arr = [NSMutableArray array];
+    
+    for (UIView *v in self.subviews) {
+        if ([v isKindOfClass:[DWTagView class]]
+            && [((DWTagView *)v).text isEqualToString:tagText]) {
+            [arr addObject:v];
+        }
+    }
+    
+    if(arr.count) return arr;
+    else return nil;
+}
+
 - (void)removeTagWithText:(NSString *)tagText {
-    DWTagView *tag = [self tagWithText:tagText];
-    [self removeTag:tag];
+    NSMutableArray *arr = [self.textArray mutableCopy];
+    int count = arr.count;
+    [arr removeObject:tagText];
+    self.textArray = arr;
+    
+    // if any change made really
+    if(count != arr.count)
+        [self display:self.animateChanges];
 }
 
 -(void)removeTag:(DWTagView *)tag {
     if (tag) {
-        [tag removeFromSuperview];
-        
-        NSMutableArray *arr = [self.textArray mutableCopy];
-        [arr removeObject:tag.text];
-        self.textArray = arr;
-        
-        [self setNeedsDisplay];
+        [self removeTagWithText:tag.text];
     }
 }
-
-//- (void)setTagBackgroundColor:(UIColor *)color
-//{
-//    lblBackgroundColor = color;
-//    [self setNeedsLayout];
-//}
-
-//- (void)setTagHighlightColor:(UIColor *)color
-//{
-//    self.highlightedBackgroundColor = color;
-//    [self setNeedsLayout];
-//}
 
 - (void)setViewOnly:(BOOL)viewOnly
 {
@@ -164,7 +180,7 @@
 
 -(void)setLayoutType:(DWTagLayout)layoutType {
     _layoutType = layoutType;
-    [self display];
+    [self display:self.animateChanges];
 }
 
 -(void)setAutomaticResize:(BOOL)automaticResize {
@@ -173,56 +189,61 @@
         [self sizeToFit];
 }
 
-//- (void)touchedTag:(id)sender
-//{
-//    UITapGestureRecognizer *t = (UITapGestureRecognizer *)sender;
-//    DWTagView *tagView = (DWTagView *)t.view;
-//    if(tagView && self.tagDelegate && [self.tagDelegate respondsToSelector:@selector(selectedTag:)])
-//        [self.tagDelegate selectedTag:tagView.label.text];
-//}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
-    [self display];
+    [self display:self.animateChanges];
 }
 
-- (void)display
+-(void)display:(BOOL) animated {
+    if (animated) {
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             [self _display];
+                         }];
+    } else {
+        [self _display];
+    }
+}
+
+- (void)_display
 {
-    BOOL firstSetUp = (self.subviews.count==0 && self.textArray.count>1);
+    BOOL firstSetUp = (self.isTagsSettingUp && self.textArray.count>1);
     self.maxTagWidth = MAXFLOAT;
     if (self.layoutType != DWTagLayoutHorizontal) {
         self.maxTagWidth = self.frame.size.width - self.labelMargin;
     }
     
-    NSMutableArray *tagViews = [NSMutableArray array];
+    NSMutableArray *oldTagViews = [NSMutableArray array];
     for (UIView *subview in [self subviews]) {
         if ([subview isKindOfClass:[DWTagView class]]) {
             DWTagView *tagView = (DWTagView*)subview;
 
             [tagView.button removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
             
-            [tagViews addObject:subview];
+            [oldTagViews addObject:subview];
         }
-        [subview removeFromSuperview];
     }
 
     CGRect previousFrame = CGRectZero;
     CGFloat maxWidth = 0;
     BOOL lineStart = YES;
     
-    for (NSString *text in textArray) {
+    NSMutableArray *newTagViews = [NSMutableArray array];
+    NSArray *texts = self.autoSort?[self.textArray sortedArrayUsingSelector:@selector(localizedStandardCompare:)]:self.textArray;
+    for (NSString *text in texts) {
         DWTagView *tagView = nil;
-        if (tagViews.count > 0) {
-            NSArray *arr = [tagViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"text=%@", text]];
+        if (oldTagViews.count > 0) {
+            NSArray *arr = [oldTagViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"text=%@", text]];
             if(arr && arr.count)
                 tagView = arr[0];
-            [tagViews removeObject:tagView];
+            [oldTagViews removeObject:tagView];
         }
         if(!tagView) {
             tagView = [[DWTagView alloc] initForList:self];
             tagView.text = text;
+            [self addSubview:tagView];
+            [newTagViews addObject:tagView];
         }
         
         if (self.layoutType == DWTagLayoutVertical
@@ -248,13 +269,28 @@
             maxWidth = MAX(maxWidth, CGRectGetMaxX(tagView.frame)+self.labelMargin);
         }
         
-        [self addSubview:tagView];
+//        [self addSubview:tagView];
 
         if (!_viewOnly) {
             [tagView.button addTarget:self action:@selector(touchUpInside:) forControlEvents:UIControlEventTouchUpInside];
         }
     }
 
+    if (oldTagViews.count) {
+        [oldTagViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        
+        if (self.tagDelegate
+            && [self.tagDelegate respondsToSelector:@selector(tagList:removedTags:)]) {
+            [self.tagDelegate tagList:self removedTags:oldTagViews];
+        }
+    }
+    
+    if (newTagViews.count
+        && self.tagDelegate
+        && [self.tagDelegate respondsToSelector:@selector(tagList:addedTags:)]) {
+        [self.tagDelegate tagList:self addedTags:newTagViews];
+    }
+    
     if (self.layoutType == DWTagLayoutFlow) {
         sizeFit = CGSizeMake(self.frame.size.width, previousFrame.origin.y + previousFrame.size.height + self.bottomMargin + 1.0f);
     } else {
@@ -267,10 +303,12 @@
         [self sizeToFit];
     }
     
-    if (firstSetUp
-        &&self.tagDelegate
-        && [self.tagDelegate respondsToSelector:@selector(tagListPreparedAllTags:)]) {
-        [self.tagDelegate tagListPreparedAllTags:self];
+    if (firstSetUp){
+        if (self.tagDelegate
+            && [self.tagDelegate respondsToSelector:@selector(tagListPreparedAllTags:)]) {
+            [self.tagDelegate tagListPreparedAllTags:self];
+        }
+        self.isTagsSettingUp = NO;
     }
 }
 
