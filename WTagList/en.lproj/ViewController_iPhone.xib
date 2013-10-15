@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ViewController">
             <connections>
+                <outlet property="btn" destination="pu1-GB-6Rv" id="Y5Z-3f-Lbg"/>
                 <outlet property="tagField" destination="W36-sg-S2a" id="SwK-gs-ybh"/>
                 <outlet property="view" destination="6" id="7"/>
                 <outlet property="xibList" destination="aL6-Oy-lpp" id="5Uf-A6-H5N"/>
@@ -19,7 +20,7 @@
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="aL6-Oy-lpp" customClass="WTagList">
                     <rect key="frame" x="20" y="58" width="280" height="164"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="defaultTextColor">
                             <color key="value" red="0.00086520772507856175" green="0.53997490875912413" blue="0.0013423867442551784" alpha="1" colorSpace="calibratedRGB"/>
@@ -34,7 +35,6 @@
                             <integer key="value" value="6"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="animateChanges" value="YES"/>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="autoSort" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </scrollView>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="W36-sg-S2a">
@@ -56,13 +56,33 @@
                         <action selector="addNewTag:" destination="-1" eventType="touchUpInside" id="jnN-BM-vGU"/>
                     </connections>
                 </button>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="bjZ-di-PWQ">
-                    <rect key="frame" x="225" y="266" width="51" height="31"/>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="bjZ-di-PWQ">
+                    <rect key="frame" x="222" y="229" width="51" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="onTintColor" red="0.45212705291970801" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <action selector="sortPrefChanged:" destination="-1" eventType="valueChanged" id="SS6-H2-b8B"/>
                     </connections>
                 </switch>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="pu1-GB-6Rv">
+                    <rect key="frame" x="20" y="230" width="186" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="Layout: Flow">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="changeLayout:" destination="-1" eventType="touchUpInside" id="AEm-kC-E5Q"/>
+                    </connections>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="autoSort" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zEL-2w-kbO">
+                    <rect key="frame" x="229" y="262" width="57" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                    <color key="textColor" white="0.70244069340000004" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>

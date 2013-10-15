@@ -189,6 +189,11 @@
         [self sizeToFit];
 }
 
+-(void)setAutoSort:(BOOL)autoSort {
+    _autoSort = autoSort;
+    [self setNeedsLayout];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];

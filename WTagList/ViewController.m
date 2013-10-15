@@ -12,14 +12,16 @@
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet WTagList *xibList;
 @property (weak, nonatomic) IBOutlet UITextField *tagField;
+@property (weak, nonatomic) IBOutlet UIButton *btn;
 @end
 
 @implementation ViewController
 
 - (IBAction)sortPrefChanged:(id)sender {
     if ([sender isKindOfClass:[UISwitch class]]) {
-        self.xibList.autoSort = [(UISwitch *)sender isOn];
-        [self.xibList setNeedsLayout];
+        self.xibList.autoSort = tagList.autoSort = [(UISwitch *)sender isOn];
+//        [self.xibList setNeedsLayout];
+//        [tagList setNeedsLayout];
     }
 }
 
@@ -39,12 +41,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    tagList = [[WTagList alloc] initWithFrame:CGRectMake(20.0f, 270.0f, 200.0f, 50.0f)];
+    
+    CGRect f = self.btn.frame;
+    f.origin.y += f.size.height + 20;
+    f.size.height += 50.0f;
+    tagList = [[WTagList alloc] initWithFrame:f];
     NSArray *array = @[@"Foo",
                        @"Tag Label 1",
                        @"Tag Label 2",
                        @"Tag Label 3",
-                       @"Tag Label 4",
+                       @"Tag Label 11",
                        @"Long long long long long long Tag"];
     [tagList setTags:array];
     tagList.automaticResize = YES;
@@ -58,7 +64,7 @@
                             @"and",
                             @"change class",
                             @"as",
-                            @"DWTagList",
+                            @"WTagList",
                             @"and",
                             @"Add tags in code"
                             ]];
@@ -69,13 +75,6 @@
     tagList.layer.borderWidth = 1;
     tagList.layer.borderColor = [UIColor redColor].CGColor;
     
-    btn = [[UIButton alloc] initWithFrame:CGRectMake(20, 210, 280, 40)];
-    btn.backgroundColor = [UIColor blackColor];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [btn setTitle:@"Flow" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(changeLayout:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:btn];
-    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeKeyboard:)];
     [self.view addGestureRecognizer:tapGesture];
 }
@@ -84,19 +83,19 @@
     [self.view endEditing:NO];
 }
 
--(void) changeLayout:(id) sender {
+-(IBAction) changeLayout:(id) sender {
     if (tagList.layoutType == WTagLayoutFlow) {
         tagList.layoutType = WTagLayoutHorizontal;
         self.xibList.layoutType = WTagLayoutHorizontal;
-        [btn setTitle:@"Horizontal" forState:UIControlStateNormal];
+        [self.btn setTitle:@"Layout: Horizontal" forState:UIControlStateNormal];
     } else if (tagList.layoutType == WTagLayoutHorizontal) {
         tagList.layoutType = WTagLayoutVertical;
         self.xibList.layoutType = WTagLayoutVertical;
-        [btn setTitle:@"Vertical" forState:UIControlStateNormal];
+        [self.btn setTitle:@"Layout: Vertical" forState:UIControlStateNormal];
     } else if (tagList.layoutType == WTagLayoutVertical) {
         tagList.layoutType = WTagLayoutFlow;
         self.xibList.layoutType = WTagLayoutFlow;
-        [btn setTitle:@"Flow" forState:UIControlStateNormal];
+        [self.btn setTitle:@"Layout: Flow" forState:UIControlStateNormal];
     }
 }
 
@@ -131,7 +130,7 @@
 
 -(void)tagListPreparedAllTags:(WTagList *)list {
     if (list == self.xibList) {
-        WTagView *tag = [self.xibList tagWithText:@"and"];
+        WTagView *tag = [self.xibList tagWithText:@"WTagList"];
         tag.textColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
         tag.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1];
         tag.borderColor = [UIColor redColor].CGColor;

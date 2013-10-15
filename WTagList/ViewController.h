@@ -12,7 +12,6 @@
 @interface ViewController : UIViewController <WTagListDelegate>
 {
     WTagList *tagList;
-    UIButton *btn;
 }
 
 @end

@@ -1,25 +1,62 @@
-DWTagList
+WTagList
 =========
 
-Create a list of tags from an NSArray to be show in a view with customisable fonts, colors etc.
+Create a list of tags from an NSArray to show in a view with customisable fonts, colors etc.
 
 ![preview](http://f.cl.ly/items/1k3K1i0w2b1d1M0O1w1G/DWTagList.png "Preview")
 
-## Installation
+## Set Up
 
-Simple copy over `DWTagList.h` and `DWTagList.m` into your project and make sure you have linked the framework `QuartzCore.framework`.
+1. Simple copy over `WTagList.h` and `WTagList.m` into your project.
+2. Make sure you have linked the framework `QuartzCore.framework`.
 
-You may then add tags to your view by the following lines of code:
+## Use
 
+### Add To View
+
+1. In code:
+```obj-c
     // Initalise and set the frame of the tag list
-    tagList = [[DWTagList alloc] initWithFrame:CGRectMake(20.0f, 70.0f, 280.0f, 300.0f)];
-    
-    // Add the items to the array
-    NSArray *array = [[NSArray alloc] initWithObjects:@"Foo", @"Tag Label 1", @"Tag Label 2", @"Tag Label 3", @"Tag Label 4", @"Tag Label 5", nil];
-    [tagList setTags:array];
+    tagList = [[WTagList alloc] initWithFrame:CGRectMake(20.0f, 70.0f, 280.0f, 300.0f)];
     
     // Add the taglist to your UIView
     [self.view addSubview:tagList];
+```
+2. In XIB
+
+    (a) Add a UIScrollView in your view.
+    (b) Change class as `WTagList`.
+
+### Set Tags
+```obj-c
+    // Set the items to the array
+    NSArray *array = [[NSArray alloc] initWithObjects:@"Foo", @"Tag Label 1", @"Tag Label 2", @"Tag Label 3", @"Tag Label 4", @"Tag Label 5", nil];
+    [tagList setTags:array];
+```
+### Other Features
+
+1. Add/remove/find
+```obj-c
+    // Add Tags
+    [taglist addTag:@"Another Tag"];
+    
+    // Remove Tags
+    [taglist removeTagWithText:@"Another Tag"];
+    
+    // Find Tag
+    TagView *tag = [tagList tagWithText:@"Foo"];
+```
+2.Layout, AutoSort, Animate Changes
+```obj-c
+    // Default is WTagLayoutFlow, Other options: WTagLayoutHorizontal/WTagLayoutVertical
+    tagList.layout = WTagLayoutHorizontal
+    
+    // Tags will be shown sorted, but original order in textArray will be preserved
+    tagList.autoSort = YES;
+    
+    // Any changes that needs re-layout like sorting, adding, removing, layout-change will be animated
+    tagList.animateChanges = YES
+```
 
 ## Customisation
 
