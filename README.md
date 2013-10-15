@@ -3,7 +3,7 @@ WTagList
 
 Create a list of tags from an NSArray to show in a view with customisable fonts, colors etc.
 
-![preview](http://f.cl.ly/items/1k3K1i0w2b1d1M0O1w1G/DWTagList.png "Preview")
+![preview](https://raw.github.com/ashikahmad/WTagList/master/Screenshot.png "Preview")
 
 ## Set Up
 
