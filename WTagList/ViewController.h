@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WTagList.h"
 
-@interface ViewController : UIViewController <WTagListDelegate>
+@interface ViewController : UIViewController <WTagListDelegate, UIAlertViewDelegate>
 {
     WTagList *tagList;
 }

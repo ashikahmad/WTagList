@@ -101,5 +101,6 @@ typedef enum {
 @property (nonatomic, readwrite) CGFloat borderWidth;
 
 - (id) initForList:(WTagList *) parentList;
+- (void) removeFromList;
 
 @end

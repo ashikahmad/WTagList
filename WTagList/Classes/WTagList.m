@@ -319,7 +319,11 @@
 
 -(void)sizeToFit {
     if (self.subviews.count) {
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, MIN(sizeFit.width, self.frame.size.width), sizeFit.height);
+        self.frame = CGRectMake(self.frame.origin.x,
+                                self.frame.origin.y,
+//                                MIN(sizeFit.width, self.frame.size.width),
+                                self.frame.size.width,
+                                sizeFit.height);
     }
 }
 
@@ -375,6 +379,12 @@
         [self applyParentTheme];
     }
     return self;
+}
+
+-(void)removeFromList {
+    if (self.parentList) {
+        [self.parentList removeTag:self];
+    }
 }
 
 -(void)applyParentTheme {

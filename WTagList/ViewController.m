@@ -13,6 +13,10 @@
 @property (weak, nonatomic) IBOutlet WTagList *xibList;
 @property (weak, nonatomic) IBOutlet UITextField *tagField;
 @property (weak, nonatomic) IBOutlet UIButton *btn;
+@property (weak, nonatomic) IBOutlet UISwitch *addToThis;
+
+@property (nonatomic, strong) WTagView *selectedTag;
+
 @end
 
 @implementation ViewController
@@ -20,15 +24,14 @@
 - (IBAction)sortPrefChanged:(id)sender {
     if ([sender isKindOfClass:[UISwitch class]]) {
         self.xibList.autoSort = tagList.autoSort = [(UISwitch *)sender isOn];
-//        [self.xibList setNeedsLayout];
-//        [tagList setNeedsLayout];
     }
 }
 
 - (IBAction)addNewTag:(id)sender {
     NSString *text = self.tagField.text;
     if (text.length) {
-        [self.xibList addTag:text];
+        if(self.addToThis.on) [tagList addTag:text];
+        else [self.xibList addTag:text];
     }
     self.tagField.text = @"";
     
@@ -116,16 +119,17 @@
 #pragma mark - TagList Delegate
 
 -(void)tagList:(WTagList *)list selectedTag:(WTagView *)tagView {
-    if (list == self.xibList) {
-        [list removeTag:tagView];
-    } else {
+    self.selectedTag = tagView;
+//    if (list == self.xibList) {
+//        [list removeTag:tagView];
+//    } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Message"
                                                         message:[NSString stringWithFormat:@"You tapped tag %@", tagView.text]
-                                                       delegate:nil
+                                                       delegate:self
                                               cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil];
+                                              otherButtonTitles:@"Delete", nil];
         [alert show];
-    }
+//    }
 }
 
 -(void)tagListPreparedAllTags:(WTagList *)list {
@@ -134,6 +138,17 @@
         tag.textColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:1];
         tag.backgroundColor = [UIColor colorWithRed:1 green:0.9 blue:0.9 alpha:1];
         tag.borderColor = [UIColor redColor].CGColor;
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == alertView.firstOtherButtonIndex
+        && self.selectedTag) {
+        [self.selectedTag removeFromList];
+        
+        self.selectedTag = nil;
     }
 }
 
