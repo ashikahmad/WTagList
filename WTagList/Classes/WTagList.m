@@ -8,20 +8,23 @@
 #import "WTagList.h"
 #import <QuartzCore/QuartzCore.h>
 
-#define CORNER_RADIUS 10.0f
+#define CORNER_RADIUS 2.0f
 #define LABEL_MARGIN_DEFAULT 5.0f
 #define BOTTOM_MARGIN_DEFAULT 5.0f
 #define FONT_SIZE_DEFAULT 13.0f
 #define HORIZONTAL_PADDING_DEFAULT 7.0f
 #define VERTICAL_PADDING_DEFAULT 3.0f
-#define BACKGROUND_COLOR [UIColor colorWithRed:0.93 green:0.93 blue:0.93 alpha:1.00]
+#define BACKGROUND_COLOR [UIColor colorWithRed:161/255.0 green:170/255.0 blue:201/255.0 alpha:1.00]
 #define TEXT_COLOR [UIColor blackColor]
 #define TEXT_SHADOW_COLOR [UIColor whiteColor]
 #define TEXT_SHADOW_OFFSET CGSizeMake(0.0f, 1.0f)
 #define BORDER_COLOR [UIColor lightGrayColor].CGColor
-#define BORDER_WIDTH 1.0f
+#define BORDER_WIDTH 0.0f
 //#define HIGHLIGHTED_BACKGROUND_COLOR [UIColor colorWithRed:0.40 green:0.80 blue:1.00 alpha:0.5]
 #define DEFAULT_AUTOMATIC_RESIZE NO
+
+#define IMG_WIDTH_HEIGHT 18
+#define IMGNAME @"img_delete.png"
 
 @interface WTagList()
 
@@ -367,6 +370,8 @@
         _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         [_label setBackgroundColor:[UIColor clearColor]];
         [_label setTextAlignment:NSTextAlignmentCenter];
+        
+
         [self addSubview:_label];
         
         _button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -391,8 +396,8 @@
     self.backgroundColor = self.parentList.defaultBackgroundColor;
     
     self.textColor = self.parentList.defaultTextColor;
-    self.textShadowColor = self.parentList.defaultTextShadowColor;
-    self.textShadowOffset = self.parentList.defaultTextShadowOffset;
+    //self.textShadowColor = self.parentList.defaultTextShadowColor;
+    //self.textShadowOffset = self.parentList.defaultTextShadowOffset;
     
     self.cornerRadius = self.parentList.defaultCornerRadius;
     self.borderColor = self.parentList.defaultBorderColor.CGColor;
@@ -410,9 +415,11 @@
     textSize.width = MAX(textSize.width, minimumTextWidth);
     textSize.height += self.parentList.verticalPadding*2;
     
-    self.frame = CGRectMake(0, 0, textSize.width+self.parentList.horizontalPadding*2, textSize.height);
+    self.frame = CGRectMake(0, 0, textSize.width+self.parentList.horizontalPadding*2 + IMG_WIDTH_HEIGHT+2.0, textSize.height);
     self.label.frame = CGRectMake(self.parentList.horizontalPadding, 0, MIN(textSize.width, self.frame.size.width), textSize.height);
-    
+    UIImageView *imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:IMGNAME]];
+    imgView.frame = CGRectMake(textSize.width+self.parentList.horizontalPadding, (textSize.height - IMG_WIDTH_HEIGHT)*0.5, IMG_WIDTH_HEIGHT, IMG_WIDTH_HEIGHT);
+    [_label addSubview:imgView];
     [_button setAccessibilityLabel:self.label.text];
 }
 
